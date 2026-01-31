@@ -1,8 +1,17 @@
+'use client' // Ensure this is at the top
+
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { FaGithub } from "react-icons/fa";
-// import Image from "next/image";
+import { useState, useEffect } from "react";
 
 export default function Header() {
+    const [mounted, setMounted] = useState(false);
+
+    // Only run on the client
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     return (
         <header
             style={{
@@ -12,17 +21,11 @@ export default function Header() {
                 alignItems: "center",
                 justifyContent: "space-between",
                 borderBottom: "1px solid #e5e7eb",
-                background: "#ffff"
+                background: "#fff" // Fixed: was #ffff
             }}
         >
             {/* Left side: Logo + Title */}
             <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                {/* <Image
-                    src="/logo.png" // replace with your logo path
-                    alt="tsender logo"
-                    width={32}
-                    height={32}
-                /> */}
                 <span style={{ fontSize: "20px", fontWeight: 600 }}>
                     tsender
                 </span>
@@ -39,6 +42,7 @@ export default function Header() {
                         alignItems: "center",
                         gap: "6px",
                         textDecoration: "none",
+                        color: "inherit", // Added to keep icon/text color consistent
                         fontSize: "14px",
                     }}
                 >
@@ -46,7 +50,8 @@ export default function Header() {
                     <span>GitHub</span>
                 </a>
 
-                <ConnectButton />
+                {/* Only render the button once the client is mounted */}
+                {mounted && <ConnectButton />}
             </div>
         </header>
     );
